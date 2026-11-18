@@ -1,0 +1,46 @@
+/* Explain: Base page reset, typography, and background styles. */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--background-color);
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background:
+        radial-gradient(circle at 88% 2%, color-mix(in srgb, var(--secondary-color) 20%, transparent), transparent 26rem),
+        radial-gradient(circle at 4% 10%, color-mix(in srgb, var(--primary-color) 12%, transparent), transparent 24rem),
+        linear-gradient(180deg, var(--cream-color) 0%, color-mix(in srgb, var(--cream-color) 86%, #efe0c8) 100%);
+}
+
+h1,
+h2,
+h3 {
+    text-wrap: balance;
+}
+
+::selection {
+    background: var(--secondary-color);
+    color: var(--charcoal-color);
+}
+
+button,
+a {
+    cursor: pointer;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--secondary-color) 80%, transparent);
+    outline-offset: 3px;
+}

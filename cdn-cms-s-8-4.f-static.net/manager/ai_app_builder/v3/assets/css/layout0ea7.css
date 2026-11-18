@@ -1,0 +1,27 @@
+/* Explain: Section layout helpers and responsive design for the page. */
+.step-line {
+    position: relative;
+}
+
+@media (min-width: 1024px) {
+    .step-line::before {
+        content: "";
+        position: absolute;
+        left: 11%;
+        right: 11%;
+        top: 3.4rem;
+        height: 1px;
+        background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--secondary-color) 75%, transparent) 0 10px, transparent 10px 20px);
+    }
+
+    .step-line > article {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+@media (max-width: 1023px) {
+    .step-card {
+        min-height: auto;
+    }
+}
