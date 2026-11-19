@@ -219,6 +219,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         orderForm.addEventListener('submit', function(event) {
             event.preventDefault();
+            if (orderForm.hasAttribute('data-submit-via-web3forms')) {
+                return;
+            }
             clearOrderStatus();
 
             if (!window.OrderSystem || typeof window.OrderSystem.submitProductOrder !== 'function') {
