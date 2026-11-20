@@ -103,7 +103,6 @@
     inset: 0;
     z-index: 60;
     pointer-events: none;
-    opacity: 0.9;
 }
 
 .festive-frame__edge {
@@ -121,11 +120,19 @@
 .festive-frame__edge--right {
     top: 0;
     bottom: 0;
-    width: clamp(1rem, 2.4vw, 2rem);
+    width: clamp(1.5rem, 4vw, 2.75rem);
+    background-image: url("../../../../../../files.cdn-files-a.com/uploads/12660396/normal_6afec2d171eabdeaf.png?ratio=9:16&format=avif");
+    background-repeat: repeat-y;
+    background-size: 300% auto;
+    background-position: left top;
+    background-color: var(--cream-color);
+    -webkit-mask-image: linear-gradient(to right, #000 0%, #000 84%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 0%, #000 84%, transparent 100%);
 }
 
 .festive-frame__edge--top {
     top: 0;
+    display: none;
     background-image: linear-gradient(180deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 55%, transparent) 62%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.72) 44%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.72) 44%, transparent 100%);
@@ -134,16 +141,13 @@
 
 .festive-frame__edge--left {
     left: 0;
-    background-image: linear-gradient(90deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 55%, transparent) 62%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, #000 0%, rgba(0, 0, 0, 0.72) 44%, transparent 100%);
-    mask-image: linear-gradient(to right, #000 0%, rgba(0, 0, 0, 0.72) 44%, transparent 100%);
+    background-position: left top;
 }
 
 .festive-frame__edge--right {
     right: 0;
-    background-image: linear-gradient(270deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 55%, transparent) 62%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to left, #000 0%, rgba(0, 0, 0, 0.72) 44%, transparent 100%);
-    mask-image: linear-gradient(to left, #000 0%, rgba(0, 0, 0, 0.72) 44%, transparent 100%);
+    transform: scaleX(-1);
+    background-position: left top;
 }
 
 
