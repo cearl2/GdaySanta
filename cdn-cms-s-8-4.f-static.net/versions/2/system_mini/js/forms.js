@@ -27,16 +27,21 @@ if (form) {
 
             const data = await response.json();
 
-            if (!response.ok || !data.success) {
+            if (response.status !== 200 || !data.success) {
                 throw new Error(data.message || "We couldn't send your order. Please try again.");
             }
 
-            if (status) {
-                status.classList.remove('hidden', 'error');
-                status.classList.add('success');
-                status.textContent = "Success! Your order has been sent.";
+            const selectedPackage = form.querySelector('[name="packageChoice"]:checked');
+            let checkoutUrl;
+            if (selectedPackage && selectedPackage.value === form.dataset.familyUid) {
+                checkoutUrl = "https://buy.stripe.com/test_4gM5kw0UXaYS2kr1q14Ni00";
+            } else if (selectedPackage && selectedPackage.value === form.dataset.productUid) {
+                checkoutUrl = "https://buy.stripe.com/test_28E8wIfPR0kebV1ecN4Ni01";
+            } else {
+                throw new Error("Please select a letter package and try again.");
             }
-            form.reset();
+
+            window.location.assign(checkoutUrl);
         } catch (error) {
             if (status) {
                 status.classList.remove('hidden', 'success');
