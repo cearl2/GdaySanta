@@ -4,6 +4,37 @@ if (form) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const submitText = submitBtn.querySelector('.order-submit-text');
     const status = document.getElementById('orderStatus');
+    let invalidNoticeShown = false;
+
+    form.addEventListener('invalid', (e) => {
+        if (invalidNoticeShown) {
+            return;
+        }
+        invalidNoticeShown = true;
+
+        const field = e.target;
+        const fieldLabel = field.labels && field.labels.length
+            ? field.labels[0].textContent.trim()
+            : 'a required field';
+        const message = field.validity.valueMissing
+            ? `Please complete ${fieldLabel} before continuing.`
+            : `Please check ${fieldLabel} before continuing.`;
+
+        if (status) {
+            status.classList.remove('hidden', 'success', 'error');
+            status.classList.add('error');
+            status.textContent = message;
+        } else {
+            alert(message);
+        }
+    }, true);
+
+    form.addEventListener('input', () => {
+        invalidNoticeShown = false;
+    });
+    form.addEventListener('change', () => {
+        invalidNoticeShown = false;
+    });
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
