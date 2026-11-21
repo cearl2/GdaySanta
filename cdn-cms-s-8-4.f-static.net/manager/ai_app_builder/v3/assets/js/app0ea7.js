@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var childFamily = document.getElementById('childFamily');
     var childRows = document.getElementById('childRows');
     var addChildBtn = document.getElementById('addChildBtn');
+    var maxFamilyChildren = 3;
 
     function setMenuOpen(isOpen) {
         if (!mobileMenu || !menuToggle) {
@@ -121,14 +122,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         if (addChildBtn) {
-            var atLimit = rows.length >= 6;
+            var atLimit = rows.length >= maxFamilyChildren;
             addChildBtn.disabled = atLimit;
             addChildBtn.classList.toggle('opacity-40', atLimit);
         }
     }
 
     function addFamilyChildRow() {
-        if (!childRows) {
+        if (!childRows || childRows.querySelectorAll('.child-row').length >= maxFamilyChildren) {
             return;
         }
         var firstRow = childRows.querySelector('.child-row');
