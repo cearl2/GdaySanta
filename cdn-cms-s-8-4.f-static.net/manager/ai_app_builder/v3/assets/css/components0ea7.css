@@ -150,5 +150,29 @@
     background-position: left top;
 }
 
+body {
+    box-sizing: border-box;
+    --page-gutter: clamp(1.5rem, 4vw, 2rem);
+    padding-inline: var(--page-gutter);
+}
+
+body > header {
+    width: calc(100% + var(--page-gutter) + var(--page-gutter));
+    margin-inline: calc(0px - var(--page-gutter));
+}
+
+body > header.sticky {
+    z-index: 100;
+    background-color: var(--cream-color);
+}
+
+body > footer {
+    position: relative;
+    z-index: 70;
+    width: calc(100% + var(--page-gutter) + var(--page-gutter));
+    margin-inline: calc(0px - var(--page-gutter));
+    background-color: var(--night-color);
+}
+
 
 
