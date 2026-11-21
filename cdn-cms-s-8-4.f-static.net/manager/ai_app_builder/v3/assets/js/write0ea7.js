@@ -10,12 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var replyForm = document.getElementById('replyCheckForm');
     var replyStatus = document.getElementById('replyStatus');
-    var replyResult = document.getElementById('replyResult');
-    var replyChildName = document.getElementById('replyChildName');
-    var replyText = document.getElementById('replyText');
-    var replyWaiting = document.getElementById('replyWaiting');
-    var replySignoff = document.getElementById('replySignoff');
-    var replyChildLetter = document.getElementById('replyChildLetter');
     var replySubmit = document.getElementById('replySubmit');
     var replySubmitText = document.getElementById('replySubmitText');
 
@@ -65,53 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
             code += alphabet.charAt(values[i] % alphabet.length);
         }
         return code;
-    }
-
-    function renderReply(row) {
-        var replyBody = row.reply ? String(row.reply).trim() : '';
-        var askedFor = row.present ? String(row.present).trim() : '';
-        var familyList = row.family_names ? String(row.family_names).trim() : '';
-
-        if (replyChildName) {
-            replyChildName.textContent = row.child_name ? String(row.child_name) : 'friend';
-        }
-        if (replyChildLetter) {
-            var sentLines = [];
-            if (askedFor) { sentLines.push(askedFor); }
-            if (familyList) { sentLines.push('Family: ' + familyList); }
-            replyChildLetter.textContent = sentLines.join('\n');
-        }
-        clearStatus(replyStatus);
-
-        if (replyBody) {
-            if (replyText) {
-                replyText.textContent = replyBody;
-                replyText.classList.remove('hidden');
-            }
-            if (replyWaiting) {
-                replyWaiting.classList.add('hidden');
-            }
-            if (replySignoff) {
-                replySignoff.classList.remove('hidden');
-            }
-        } else {
-            if (replyText) {
-                replyText.classList.add('hidden');
-            }
-            if (replyWaiting) {
-                replyWaiting.classList.remove('hidden');
-            }
-            if (replySignoff) {
-                replySignoff.classList.add('hidden');
-            }
-        }
-
-        if (replyResult) {
-            replyResult.classList.remove('hidden');
-            if (typeof replyResult.scrollIntoView === 'function') {
-                replyResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
     }
 
     if (letterForm) {
@@ -215,23 +162,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (replyForm) {
-        replyForm.addEventListener('submit', function(event) {
+        replyForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             clearStatus(replyStatus);
-            if (replyResult) {
-                replyResult.classList.add('hidden');
-            }
 
-            var code = fieldValue(replyForm, 'code').toUpperCase().replace(/[^A-Z0-9]/g, '');
-
-            if (code.length !== 6) {
-                showStatus(replyStatus, 'error', 'Type the 6-character magic code from your letter confirmation.');
-                focusField(replyForm, 'code');
-                return;
-            }
-
-            if (!window.DataSystem || typeof window.DataSystem.get !== 'function') {
-                showStatus(replyStatus, 'error', "Santa's letterbox is closed right now. Please refresh the page and try again.");
+            var email = fieldValue(replyForm, 'email');
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+                showStatus(replyStatus, 'error', 'Enter a valid email address and try again.');
+                focusField(replyForm, 'email');
                 return;
             }
 
@@ -239,38 +177,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 replySubmit.disabled = true;
             }
             if (replySubmitText) {
-                replySubmitText.textContent = 'Looking for your letter…';
+                replySubmitText.textContent = 'Sending request...';
             }
 
-            window.DataSystem.get('santa_letters', 'santa-' + code.toLowerCase()).then(function(result) {
-                if (!result || !result.success || !result.exists || !result.data_json) {
-                    showStatus(replyStatus, 'error', 'We could not find a letter with that code. Check the six characters and try again.');
-                    return;
+            try {
+                var response = await fetch(replyForm.action, {
+                    method: 'POST',
+                    body: new FormData(replyForm)
+                });
+                var data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || 'We could not send your request. Please try again.');
                 }
-
-                var row = null;
-                try {
-                    row = JSON.parse(result.data_json);
-                } catch (error) {
-                    row = null;
-                }
-
-                if (!row) {
-                    showStatus(replyStatus, 'error', 'We could not open that letter. Please try again in a moment.');
-                    return;
-                }
-
-                renderReply(row);
-            }).catch(function() {
-                showStatus(replyStatus, 'error', 'We could not reach the North Pole just now. Please check your connection and try again.');
-            }).finally(function() {
+                showStatus(replyStatus, 'success', "Your request was sent. We'll follow up by email.");
+            } catch (error) {
+                showStatus(replyStatus, 'error', error.message || 'We could not send your request. Please try again.');
+            } finally {
                 if (replySubmit) {
                     replySubmit.disabled = false;
                 }
                 if (replySubmitText) {
-                    replySubmitText.textContent = "Show Santa's reply";
+                    replySubmitText.textContent = 'Request an email update';
                 }
-            });
+            }
         });
     }
 });

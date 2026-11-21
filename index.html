@@ -325,35 +325,27 @@ $20</span>
             </div>
         </div>
     </div>
-</section>        <!-- Explain: Section for checking Santa's reply using a magic code. -->
+</section>        <!-- Explain: Section for requesting an email update about a Santa letter. -->
 <section id="check" class="scroll-mt-24 bg-[var(--surface-color)] px-5 py-20 sm:px-8 lg:px-10">
     <div class="mx-auto max-w-3xl">
         <div class="text-center">
             <p class="eyebrow text-[var(--accent-color)]">Santa's reply</p>
             <h2 class="mt-3 font-[family-name:var(--font-heading)] text-4xl font-black leading-tight tracking-[-0.02em] text-[var(--charcoal-color)] sm:text-5xl"> Ask the elves for an update</h2>
-            <p class="mt-4 text-lg leading-8 text-[var(--text-muted)]">Enter the email address you used when submitting your child's letter to receive an update on its magical journey from the North Pole and back. Keep an eye on your inbox for a little Christmas magic!</p>
+            <p class="mt-4 text-lg leading-8 text-[var(--text-muted)]">Enter the email address you used when submitting your child's letter to request an update. We'll follow up by email.</p>
         </div>
-        <form id="replyCheckForm" class="paper-panel mt-8 space-y-4 p-6 sm:p-8">
+        <form action="https://api.web3forms.com/submit" method="POST" id="replyCheckForm" class="paper-panel mt-8 space-y-4 p-6 sm:p-8">
+            <input type="hidden" name="access_key" value="b50b737f-a820-457a-b750-bdee0e359c57">
+            <input type="hidden" name="subject" value="G'day Santa letter update request">
+            <input type="hidden" name="message" value="A customer has requested an update about their Santa letter. Please follow up by email.">
             <fieldset class="min-w-0">
-                <label class="mb-1 block text-sm font-bold text-[var(--charcoal-color)]" for="replyCode">Your Email Address</label>
-                <input id="replyCode" name="code" type="email" required maxlength="12" autocomplete="off" spellcheck="false" placeholder="your.email@example.com" class="input min-h-14 w-full rounded-full border border-[var(--border-color)] bg-[var(--surface-color)] px-5 text-center font-[family-name:var(--font-heading)] text-2xl font-black tracking-[0.28em] text-[var(--charcoal-color)] focus:border-[var(--primary-color)] focus:outline-none">
+                <label class="mb-1 block text-sm font-bold text-[var(--charcoal-color)]" for="replyEmail">Your Email Address</label>
+                <input id="replyEmail" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="your.email@example.com" class="input min-h-14 w-full rounded-full border border-[var(--border-color)] bg-[var(--surface-color)] px-5 text-center font-[family-name:var(--font-heading)] text-2xl font-black text-[var(--charcoal-color)] focus:border-[var(--primary-color)] focus:outline-none">
             </fieldset>
             <button id="replySubmit" type="submit" class="btn min-h-12 w-full rounded-full border-0 bg-[var(--primary-color)] text-base text-[var(--cream-color)] transition-all duration-300 hover:bg-[var(--primary-hover)]">
-                <i class="fa-solid fa-magnifying-glass text-sm"></i> <span id="replySubmitText">Email update</span>
+                <i class="fa-solid fa-envelope text-sm"></i> <span id="replySubmitText">Request an email update</span>
             </button>
             <p id="replyStatus" class="order-status hidden rounded-2xl px-4 py-3 text-sm leading-6" role="status" aria-live="polite"></p>
         </form>
-        <div id="replyResult" class="paper-panel mt-6 hidden p-6 sm:p-8">
-            <p class="eyebrow text-[var(--accent-color)]">From the North Pole</p>
-            <h3 class="mt-2 font-[family-name:var(--font-heading)] text-2xl font-black text-[var(--charcoal-color)]">Dear <span id="replyChildName">friend</span>,</h3>
-            <p id="replyText" class="mt-4 whitespace-pre-line font-[family-name:var(--font-hand)] text-2xl leading-9 text-[var(--charcoal-color)]"></p>
-            <p id="replyWaiting" class="mt-4 hidden leading-7 text-[var(--text-muted)]">Santa has your letter safely on his desk and is still writing your reply. Give it a couple of days and check again with the same magic code.</p>
-            <p id="replySignoff" class="mt-4 hidden text-right font-[family-name:var(--font-hand)] text-2xl text-[var(--accent-color)]">— Santa</p>
-            <div class="mt-6 rounded-2xl border border-[var(--border-color)] bg-[var(--cream-color)] p-5">
-                <p class="text-xs font-black uppercase tracking-[0.22em] text-[var(--primary-color)]">What you asked Santa for</p>
-                <p id="replyChildLetter" class="mt-3 whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]"></p>
-            </div>
-        </div>
     </div>
 </section>    </main>
     <!-- Explain: Site-wide footer with contact and legal information. -->
@@ -378,7 +370,7 @@ $20</span>
         <div class="text-sm leading-7 text-[var(--cream-color)]/75">
             <p class="text-xs font-black uppercase tracking-[0.22em] text-[var(--secondary-color)]">Good to know</p>
             <ul class="mt-3 space-y-2">
-                <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1 text-xs text-[var(--secondary-color)]"></i><span>Keep your magic code to read Santa's reply on the page</span></li>
+                <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1 text-xs text-[var(--secondary-color)]"></i><span>Use the form above to request an update by email</span></li>
                 <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1 text-xs text-[var(--secondary-color)]"></i><span>Order by 12 December for Christmas delivery</span></li>
                 <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1 text-xs text-[var(--secondary-color)]"></i><span>Every letter arrives in its own sealed envelope</span></li>
                 <li class="flex items-start gap-2"><i class="fa-solid fa-check mt-1 text-xs text-[var(--secondary-color)]"></i><a class="text-[var(--cream-color)] transition-all duration-300 hover:text-[var(--secondary-color)]" href="info/Privacy-Data-Storage.pdf">Privacy &amp; Data Storage</a></li>
