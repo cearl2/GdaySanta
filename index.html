@@ -158,16 +158,23 @@
                                 </span>
                                 <span class="block text-sm leading-6 text-[var(--text-muted)]">One personalised letter from Santa, finished with a traditional Christmas wax seal and posted in an envelope addressed to your child.</span>
                                 <span class="mt-auto block pt-1 font-[family-name:var(--font-heading)] text-2xl font-black text-[var(--charcoal-color)]">
-$TBA</span>
+$20</span>
                             </label>
-                                                                                                                <label class="flex h-full cursor-pointer flex-col gap-3 rounded-2xl border border-[var(--border-color)] bg-[var(--surface-color)] p-4 transition-all duration-300 hover:border-[var(--primary-color)] has-[:checked]:border-[var(--primary-color)] has-[:checked]:bg-[var(--cream-color)]">
-                                <span class="flex items-start gap-3">
-                                    <input type="radio" name="packageChoice" value="05268c3b8c7be34d3d3020d34641a271" data-price="35" class="radio radio-primary mt-1" >
+                                                                                                                <div class="flex h-full flex-col gap-3 rounded-2xl border border-[var(--border-color)] bg-[var(--surface-color)] p-4 transition-all duration-300 hover:border-[var(--primary-color)] has-[:checked]:border-[var(--primary-color)] has-[:checked]:bg-[var(--cream-color)]">
+                                <label for="familyPackageChoice" class="flex cursor-pointer items-start gap-3">
+                                    <input id="familyPackageChoice" type="radio" name="packageChoice" value="05268c3b8c7be34d3d3020d34641a271" data-price="35" class="radio radio-primary mt-1" >
                                     <span class="block font-black text-[var(--charcoal-color)]">Family letter pack</span>
-                                </span>
+                                </label>
                                 <span class="block text-sm leading-6 text-[var(--text-muted)]">Personalised letters from Santa for every child in your family, each finished with a traditional Christmas wax seal and posted together in one delivery.</span>
-                                <span class="mt-auto block pt-1 font-[family-name:var(--font-heading)] text-2xl font-black text-[var(--charcoal-color)]">$TBA</span>
-                            </label>
+                                <div class="mt-auto flex flex-wrap items-center justify-between gap-3 pt-1">
+                                    <span id="familyPackPrice" class="font-[family-name:var(--font-heading)] text-2xl font-black text-[var(--charcoal-color)]">$48</span>
+                                    <div class="inline-flex items-center gap-2" role="group" aria-label="Number of children in family pack">
+                                        <button type="button" id="familyChildMinusBtn" class="btn min-h-11 rounded-full border border-[var(--border-color)] bg-transparent px-4 text-sm font-bold text-[var(--accent-color)] transition-all duration-300 hover:bg-[var(--accent-color)]/10 disabled:cursor-not-allowed" aria-label="Remove one child from family pack">&minus;</button>
+                                        <output id="familyChildCount" class="min-w-[4.5rem] text-center text-sm font-bold text-[var(--charcoal-color)]" aria-live="polite">3 children</output>
+                                        <button type="button" id="familyChildPlusBtn" class="btn min-h-11 rounded-full border border-[var(--border-color)] bg-transparent px-4 text-sm font-bold text-[var(--accent-color)] transition-all duration-300 hover:bg-[var(--accent-color)]/10 disabled:cursor-not-allowed" aria-label="Add one child to family pack"><i class="fa-solid fa-plus text-xs"></i></button>
+                                    </div>
+                                </div>
+                            </div>
                                                                                 </div>
                         <p class="mt-2 text-xs leading-5 text-[var(--text-muted)]">Prices include postage within Australia.</p>
                     </div>
@@ -296,9 +303,9 @@ $TBA</span>
                                                     </div>
                     </div>
                     <button type="submit" class="order-submit btn min-h-12 w-full rounded-full border-0 bg-[var(--accent-color)] text-base text-[var(--cream-color)] transition-all duration-300 hover:bg-[var(--primary-hover)]">
-                        <i class="fa-solid fa-lock text-sm"></i> <span class="order-submit-text">Place my order</span>
+                        <i class="fa-solid fa-lock text-sm"></i> <span class="order-submit-text">Submit my details</span>
                     </button>
-                    <p class="text-center text-xs leading-5 text-[var(--text-muted)]">You will get an instant confirmation with your order number. We only use these details to write and post your letter.</p>
+                    <p class="text-center text-xs leading-5 text-[var(--text-muted)]">Your details will be sent securely. Payment checkout is not available yet, so your order will not be confirmed.</p>
                     <p id="orderStatus" class="order-status hidden rounded-2xl px-4 py-3 text-sm leading-6" role="status" aria-live="polite"></p>
                 </form>
                 <div id="orderConfirmation" class="paper-panel hidden p-7 sm:p-9">

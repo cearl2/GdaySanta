@@ -8,6 +8,12 @@ if (form) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        if (status) {
+            status.classList.add('hidden');
+            status.classList.remove('success', 'error');
+            status.textContent = '';
+        }
+
         const formData = new FormData(form);
         formData.append("access_key", "db8cd445-ed6b-4b73-8d10-23cad811f5a6");
 
@@ -31,17 +37,16 @@ if (form) {
                 throw new Error(data.message || "We couldn't send your order. Please try again.");
             }
 
-            const selectedPackage = form.querySelector('[name="packageChoice"]:checked');
-            let checkoutUrl;
-            if (selectedPackage && selectedPackage.value === form.dataset.familyUid) {
-                checkoutUrl = "https://buy.stripe.com/test_4gM5kw0UXaYS2kr1q14Ni00";
-            } else if (selectedPackage && selectedPackage.value === form.dataset.productUid) {
-                checkoutUrl = "https://buy.stripe.com/test_28E8wIfPR0kebV1ecN4Ni01";
-            } else {
-                throw new Error("Please select a letter package and try again.");
-            }
+            // TODO: Replace these placeholders and re-enable Stripe checkout when ready.
+            // const familyCheckoutUrl = "FAMILY_STRIPE_CHECKOUT_URL_PLACEHOLDER";
+            // const singleCheckoutUrl = "SINGLE_STRIPE_CHECKOUT_URL_PLACEHOLDER";
+            // window.location.assign(checkoutUrl);
 
-            window.location.assign(checkoutUrl);
+            if (status) {
+                status.classList.remove('hidden', 'error', 'success');
+                status.classList.add('success');
+                status.textContent = "Your details were submitted successfully. No payment has been taken because checkout is not available yet.";
+            }
         } catch (error) {
             if (status) {
                 status.classList.remove('hidden', 'success');

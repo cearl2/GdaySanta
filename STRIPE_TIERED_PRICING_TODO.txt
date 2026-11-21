@@ -1,0 +1,86 @@
+G'DAY SANTA - STRIPE TIERED PRICING TODO
+========================================
+
+Purpose
+-------
+Restore payment checkout once Stripe can charge the family-pack price based on
+the number of children.
+
+Current state
+-------------
+- Stripe redirects are disabled in:
+  cdn-cms-s-8-4.f-static.net/versions/2/system_mini/js/forms.js
+- The family pack card displays a calculated price using calculateTotal() in:
+  cdn-cms-s-8-4.f-static.net/manager/ai_app_builder/v3/assets/js/app0ea7.js
+- The family pack allows 2 to 5 children: minFamilyChildren and
+  maxFamilyChildren in app0ea7.js. Its default quantity is 3.
+- calculateTotal() is inside the DOMContentLoaded callback, so forms.js cannot
+  call it directly.
+- The family package input still has data-price="35" in index.html. Check
+  whether this stale fixed price is used elsewhere; update or remove it when
+  wiring in tiered checkout.
+- Submitting the form currently sends details to Web3Forms and displays a
+  message that payment is unavailable. No payment is taken.
+
+To do when Stripe links are ready
+---------------------------------
+1. Confirm the Stripe checkout supports the required tiered amounts:
+   1 child:  AU$20
+   2 children: AU$36
+   3 children: AU$48
+   4 children: AU$59
+   5 children: AU$70
+   6 children: AU$80
+   7 children: AU$85
+   8 children: AU$90
+   9 children: AU$95
+   10 children: AU$100
+   Over 10: AU$100 plus AU$10 per additional child
+
+   The current family pack allows 2 to 5 children, so only the 2-, 3-, 4-,
+   and 5-child tiers can currently be selected. A 1-child order uses the
+   separate single-child package. If either family limit changes, update and
+   test minFamilyChildren, maxFamilyChildren, and Stripe pricing together.
+
+2. Decide how checkout will receive the tier:
+   - Use a Stripe checkout link only if it can apply these exact amounts based
+     on the selected child count.
+   - Otherwise create a Checkout Session on a trusted server using the
+     selected package and child count. Do not put Stripe secret keys in
+     browser JavaScript or trust a client-submitted price.
+
+3. Re-enable checkout in forms.js:
+   - Replace the family and single-package placeholders with the final
+     checkout flow.
+   - After the Web3Forms response succeeds, send the selected package and
+     family child count to checkout, then redirect to the returned checkout
+     URL.
+   - Derive the family count from the child rows (or another validated
+     source), not from the visible counter text alone.
+   - Keep submission errors visible and do not redirect if the form or
+     checkout setup fails.
+
+4. Keep displayed and charged prices consistent:
+   - Use one authoritative tier schedule for both the displayed family price
+     and the checkout amount.
+   - calculateTotal() is currently scoped inside app0ea7.js. If forms.js needs
+     it, move it to a shared module or expose a carefully controlled shared
+     helper; otherwise calculate and validate the amount on the server.
+   - Update the family package's data-price="35" if it is still used.
+
+5. Restore accurate form copy:
+   - Replace the temporary "checkout is not available" status and notice.
+   - Only show an order-confirmed message after payment is confirmed, not
+     merely after Web3Forms accepts the details.
+
+6. Test before enabling live checkout:
+   - Family pack at 2, 3, 4, and 5 children (and every additional allowed
+     tier).
+   - Single-child package still routes to its correct checkout.
+   - Displayed price matches the Stripe checkout total and final receipt.
+   - Missing/invalid package, failed form submission, checkout failure, and
+     canceled payment do not appear as successful paid orders.
+   - Verify the form is not submitted or charged twice.
+
+After testing, remove the placeholder comments and deploy the final checkout
+configuration.
