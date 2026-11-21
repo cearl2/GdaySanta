@@ -46,7 +46,7 @@
         const childLabels = incompleteChildren.map((child) => `Child ${child.number}`);
         const childList = childLabels.join(', ');
         const verb = incompleteChildren.length === 1 ? 'has' : 'have';
-        showError(`${childList} ${verb} incomplete details. Add a first name and a detail for Santa.`);
+        showError(`${childList} ${verb} incomplete details. Please check first name and a detail for Santa.`);
 
         const firstIncompleteChild = incompleteChildren[0];
         const nameIsMissing = !firstIncompleteChild.nameField ||
