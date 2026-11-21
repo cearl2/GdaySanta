@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
             orderSubmit.disabled = isSending;
         }
         if (orderSubmitText) {
-            orderSubmitText.textContent = isSending ? 'Sending to the North Pole…' : 'Place my order';
+            orderSubmitText.textContent = isSending ? 'Sending to the North Pole…' : 'Continue to payment';
         }
     }
 

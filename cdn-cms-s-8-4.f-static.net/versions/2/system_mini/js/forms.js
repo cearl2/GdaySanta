@@ -14,9 +14,6 @@ if (form) {
             status.textContent = '';
         }
 
-        const formData = new FormData(form);
-        formData.append("access_key", "db8cd445-ed6b-4b73-8d10-23cad811f5a6");
-
         const originalText = submitText ? submitText.textContent : submitBtn.textContent;
         submitBtn.disabled = true;
         if (submitText) {
@@ -26,6 +23,32 @@ if (form) {
         }
 
         try {
+            const selectedPackage = form.querySelector('[name="packageChoice"]:checked');
+            if (!selectedPackage) {
+                throw new Error("Please select a letter package and try again.");
+            }
+
+            const isFamilyPackage = selectedPackage.value === form.dataset.familyUid;
+            const isSinglePackage = selectedPackage.value === form.dataset.productUid;
+            if (!isFamilyPackage && !isSinglePackage) {
+                throw new Error("Please select a valid letter package and try again.");
+            }
+
+            const childCount = isFamilyPackage
+                ? form.querySelectorAll('#childRows .child-row').length
+                : 1;
+            if (isFamilyPackage && (childCount < 2 || childCount > 5)) {
+                throw new Error("The family pack requires between 2 and 5 children.");
+            }
+
+            const checkoutKey = String(childCount);
+            if (typeof getStripeLink !== "function" || !getStripeLink(checkoutKey)) {
+                throw new Error("Checkout is unavailable for this package right now.");
+            }
+
+            const formData = new FormData(form);
+            formData.append("access_key", "db8cd445-ed6b-4b73-8d10-23cad811f5a6");
+
             const response = await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
                 body: formData
@@ -37,15 +60,14 @@ if (form) {
                 throw new Error(data.message || "We couldn't send your order. Please try again.");
             }
 
-            // TODO: Replace these placeholders and re-enable Stripe checkout when ready.
-            // const familyCheckoutUrl = "FAMILY_STRIPE_CHECKOUT_URL_PLACEHOLDER";
-            // const singleCheckoutUrl = "SINGLE_STRIPE_CHECKOUT_URL_PLACEHOLDER";
-            // window.location.assign(checkoutUrl);
-
             if (status) {
                 status.classList.remove('hidden', 'error', 'success');
                 status.classList.add('success');
-                status.textContent = "Your details were submitted successfully. No payment has been taken because checkout is not available yet.";
+                status.textContent = "Your details were sent successfully. Redirecting to secure payment...";
+            }
+
+            if (typeof goTo !== "function" || !goTo(checkoutKey)) {
+                throw new Error("Your details were sent, but checkout could not be opened. Please contact us before submitting again.");
             }
         } catch (error) {
             if (status) {
