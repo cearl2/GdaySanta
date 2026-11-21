@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function calculateTotal(letterNumber) {
-        const prices = [20, 36, 48, 59, 70, 80, 85, 90, 95, 100];
+        const prices = [20, 36, 51, 64, 75, 80, 85, 90, 95, 100];
 
         if (letterNumber <= 0) return 0;
 
